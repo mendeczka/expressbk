@@ -1,8 +1,19 @@
 var createError = require('http-errors');
+var cookieSession = require('cookie-session');
 var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan'); //zrzucanie logów w trybie developerskim
+var config = require('./routes/config');
+const mongoose = require('mongoose');
+
+mongoose.connect(config.db);
+
+var db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error'));
+// db.once('open', ()=> {
+//   console.log('db connect');
+// });
 
 var indexRouter = require('./routes/index'); //deklaracja rutingu
 var newsRouter = require('./routes/news'); //deklaracja rutingu
@@ -23,6 +34,14 @@ app.use(express.urlencoded({
 }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public'))); // deklaracja katalogu statycznego z assetami  np css js html - to co ma być publiczne
+
+app.use(cookieSession({
+  name: 'session',
+  keys: config.keySession,
+
+  // Cookie Options
+  maxAge: config.maxAgeSession // 24 hours
+}))
 
 app.use(function(req,res, next) {
   res.locals.path = req.path;
