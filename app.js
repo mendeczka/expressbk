@@ -19,7 +19,7 @@ var indexRouter = require('./routes/index'); //deklaracja rutingu
 var newsRouter = require('./routes/news'); //deklaracja rutingu
 var quizRouter = require('./routes/quiz'); //deklaracja rutingu
 var adminRouter = require('./routes/admin'); //deklaracja rutingu
-
+var apiRouter = require('./routes/api'); 
 
 var app = express();
 
@@ -53,7 +53,7 @@ app.use('/', indexRouter); // wywołanie rutingu
 app.use('/news', newsRouter); // wywołanie rutingu
 app.use('/quiz', quizRouter); // wywołanie rutingu
 app.use('/admin', adminRouter); // wywołanie rutingu
-
+app.use('/api', apiRouter); // wywołanie rutingu
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
